@@ -1,0 +1,16 @@
+//wskazniki sa uzywane np. do podmiany jakiejs wartosci zmiennej przez funkcje, oznaczenia
+
+p - adres zmiennej na któr¹ wskazuje p, adres sekcji danych g³ównego pliku wykonywalnego np. zmiennej globalnej, np. adres zmiennej typu int;
+
+*p oraz (*(&p)) - wartoœæ zmiennej, to na co wskazuje p, dereferencja, pobranie wartoœci zmiennej p;
+
+&p oraz **p- referencja p wskaŸnik na wskaŸnik - adres wskaŸnika, adres adresu, adres zmiennej na stosie, znakiem & pobieramy adres ze stosu;
+
+int *tab[10] - tablica 10 wskaŸników o typie int
+int (*)tab[10] - wskaŸnik na tablicê 10 intów
+
+//kompilacja w gcc
+gcc -Wall -Wextra -g -o lista-wskazniki.exe zadaniedomowe-lista_na_wskaznikach.c
+
+//odpalanie programiku
+./lista-wskazniki.exe
