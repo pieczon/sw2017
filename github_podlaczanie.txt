@@ -5,7 +5,7 @@ git config --global user.email "bandarhawaii@gmial.com"
 git config --global user.name "pieczon"
 git push origin master
 
-// utworzenie i komendy do synchronizacji repozytoriow gita jako skrypt shella
+//utworzenie i komendy do synchronizacji repozytoriow gita jako skrypt shella
 touch push-to-git.sh
 chmod 777 push-to-git.sh
 
