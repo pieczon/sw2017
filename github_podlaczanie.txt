@@ -1,7 +1,7 @@
 //dodanie obslugi gita do terminala
 git clone https://github.com/pieczon/sw2017
 git add .
-git config --global user.email "bandarhawaii@gmial.com"
+git config --global user.email "bandarhawaii@gmail.com"
 git config --global user.name "pieczon"
 git push origin master
 
