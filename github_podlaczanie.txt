@@ -1,0 +1,11 @@
+git clone https://github.com/pieczon/sw2017
+git add .
+git config --global user.email "bandarhawaii@gmial.com"
+git config --global user.name "pieczon"
+git push origin master
+
+touch push-to-git.sh
+!#/bin/bash
+git add .
+git commit -m "add"
+git push origin master
