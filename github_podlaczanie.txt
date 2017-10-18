@@ -1,12 +1,22 @@
+//dodanie obslugi gita do terminala
 git clone https://github.com/pieczon/sw2017
 git add .
 git config --global user.email "bandarhawaii@gmial.com"
 git config --global user.name "pieczon"
 git push origin master
 
+// utworzenie i komendy do synchronizacji repozytoriow gita jako skrypt shella
 touch push-to-git.sh
+chmod 777 push-to-git.sh
+
+//zawartosc powyzszego pliku .sh
 !#/bin/bash
 git pull
 git add .
 git commit -m "add"
 git push origin master
+
+//dodanie aliasu na wykonanie skryptu shella
+nano ~/.bashrc
+alias gitp='./push-to-git.sh'
+. ~/.bashrc
