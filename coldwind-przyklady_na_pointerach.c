@@ -8,6 +8,6 @@ main(void)
 //int b=10;
 int *p=&a;
 
-printf("%p %p %p\n",&p,p,*p);
+printf("%i %i %i\n",&p,p,*p);
 
 }
