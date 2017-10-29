@@ -9,8 +9,7 @@ struct studtoku
  struct studtoku *adrnast;
 
 }studtoku;
-
-//, sara={3, 24658, "Kosmetologia", "Dawidziuk"};
+//sara={3, 24658, "Kosmetologia", "Dawidziuk"};
 
 int main()
 {
