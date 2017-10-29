@@ -17,7 +17,11 @@ function checkpar
 function savefile
 {
   touch $2
-  echo "$1">$2
+  for(i=0; i<=length("$1"); i++)
+  {
+  pionowo ==  echo "$1\n" | cut -ci-1;
+  pionowo>$2;
+  }
 }
 
 

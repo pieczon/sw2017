@@ -1,40 +1,44 @@
-#include <stdlib.h>
 #include <stdio.h>
-///////////////STRUKTURA/////////////////////////
-struct node
-{
-	int d;
-	struct node *n;
-}node;
+#include <stdlib.h>
 
-int main ()
+//1. definiuję strukturę listy
+struct studtoku
 {
-////////DEKLARACJA I INICJALIZACJA LISTY/////////
-	struct node *head; //deklaracja poczatku listy
-	struct node *next; //deklaracja elementu
-	head = malloc(sizeof(node)); // nadanie poczatkowi listy rozmiaru struktury node
-	head->n=NULL; //stworzenie poczatku listy jako jedynej pozycji listy
-	head->d=0 ; //przypisanie pierwszemu elementowi wartosci 0
-	next = head;
-//////////////DODAWANIE///////////////////////////	
-	if(next == NULL)
-	{
-		printf("out of memory");
-		return 0;
-	}
-	for(int i=1;i<99;i++) 
-	{
-		next = next->n = malloc(sizeof(node));
-		next->n=NULL;
-		next->d=i;
-	}
-	
-///////////WYSWIETLANIE PRZEZ ITERACJE///////////	
-	next = head;
-	while ( next != NULL )
-	{
-    		printf( "%d\n", next->d );
-  		next = next->n;
-	}
-	return 0;
+ int rokst, nralb;
+ char kierunek[20], nazwisko[20];
+ struct studtoku *adrnast;
+
+}studtoku;
+
+//, sara={3, 24658, "Kosmetologia", "Dawidziuk"};
+
+int main()
+{
+//2. inicjalizacja listy, tworzenie obiektów po kolei: początek listy, element listy
+struct studtoku *head;
+struct studtoku *kolejny;
+
+head = malloc(sizeof(studtoku));
+kolejny = malloc(sizeof(studtoku));
+
+head->adrnast = NULL;
+
+//3. zapełnianie listy 
+kolejny = kolejny->adrnast = malloc(sizeof(studtoku));
+kolejny->adrnast = NULL;
+
+kolejny->rokst = 4;
+kolejny->nralb = 25555;
+kolejny->kierunek[20] = "Lekarski";
+kolejny->nazwisko[20] = "Pokora";
+//kolejny-> {4, 39727, "Stomatologia", "Przydrożna"};
+
+//4. pokazywanie listy
+while(kolejny != NULL)
+{
+printf("Dane studentów, rok studiów: %d, numer albumu: %d, nazwa kierunku: %s, nazwisko: %s \n", kolejny->rokst, kolejny->nralb, kolejny->kierunek, kolejny->nazwisko);
+kolejny = kolejny->adrnast;
+}
+
+return 0;
 }
