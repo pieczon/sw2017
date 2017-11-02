@@ -1,46 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-//1. definiuję strukturę listy
+//1. definiuję strukturę, z dodaniem przykładowych rekordów do listy
 struct studtoku
 {
- int rokst, nralb;
- char kierunek[20], nazwisko[20];
- struct studtoku *adrnast;
-
+    int rokst, nralb;
+    char *kierunek, *nazwisko;
+    struct studtoku *adrnast;
 }studtoku;
 
 struct studtoku sara={3, 24658, "Kosmetologia", "Dawidziuk", NULL};
-int t = 7;
+struct studtoku nadia={1, 56777, "Biotechnologia", "Zalewska", NULL};
 
 int main()
 {
-//2. inicjalizacja listy, tworzenie obiektów po kolei: początek listy, element listy
+//2. inicjalizacja listy, tworzenie nowych obiektów listy: początek listy, elementy listy
+    struct studtoku *head;
+        head = malloc(sizeof(studtoku));
+        head->adrnast = NULL;
 
-struct studtoku *head;
-struct studtoku *kolejny;
-head = malloc(sizeof(studtoku));
-kolejny = malloc(sizeof(studtoku));
-head->adrnast = NULL;
-
-//3. zapełnianie listy 
-
-kolejny = kolejny->adrnast = malloc(sizeof(studtoku));
-kolejny->adrnast = NULL;
-
-//kolejny->rokst = 4;
-//kolejny->nralb = 25555;
-//kolejny->kierunek[] = "Lekarski";
-//kolejny->nazwisko[] = "Pokora";
-//kolejny-> struct studtoku aaa={4, 39727, "Stomatologia", "Przydrożna"};
-
+    struct studtoku *kolejny;
+        kolejny = malloc(sizeof(studtoku)); 
+        kolejny = kolejny->adrnast = malloc(sizeof(studtoku));
+        kolejny->adrnast = &sara;
+        
+    //char bufor[30 + 1];
+        kolejny->rokst = 4;
+        kolejny->nralb = 25555;
+        kolejny->kierunek = (char*)malloc(sizeof(char) * (strlen("Lekarski") + 1));
+        strcpy(kolejny->kierunek, "Lekarski");
+        //strcpy(kierunek, bufor);     
+        kolejny->nazwisko = (char*)malloc(sizeof(char) * (strlen("Pokora") + 1));
+        strcpy(kolejny->nazwisko, "Pokora");
+        //strcpy(nazwisko, bufor);
+        sara.adrnast = &nadia;
+        
 //4. pokazywanie listy
+    struct studtoku *tmp = NULL;
+    tmp=kolejny;
 
-while(kolejny != NULL)
-{
-printf("Dane studentów, rok studiów: %d, numer albumu: %d, nazwa kierunku: %s, nazwisko: %s \n", kolejny->rokst, kolejny->nralb, kolejny->kierunek, kolejny->nazwisko);
-kolejny = kolejny->adrnast;
-}
+    while(tmp != NULL)
+    {
+        printf("Dane studentów, rok studiów: %d, numer albumu: %d, nazwa kierunku: %s, nazwisko: %s \n", tmp->rokst, tmp->nralb, tmp->kierunek, tmp->nazwisko);
+        tmp = tmp->adrnast;
+    }
 
-return 0;
+    printf("Nazwisko Pokora?: %s\n", kolejny->nazwisko);
+    return 0;
 }
