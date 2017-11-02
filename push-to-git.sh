@@ -1,5 +1,6 @@
 #!/bin/bash
-git pull
+
+#git pull
 git add .
 git commit -m "add"
 git push origin master
