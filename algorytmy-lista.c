@@ -15,7 +15,7 @@ struct studtoku nadia={1, 56777, "Biotechnologia", "Zalewska", NULL};
 
 int main()
 {
-//2. inicjalizacja listy, tworzenie nowych obiektów listy: początek listy, elementy listy
+//2. inicjalizacja listy, tworzenie nowych obiektów listy: początek listy i kolejne elementy listy
     struct studtoku *head;
         head = malloc(sizeof(studtoku));
         head->adrnast = NULL;
@@ -25,18 +25,19 @@ int main()
         kolejny = kolejny->adrnast = malloc(sizeof(studtoku));
         kolejny->adrnast = &sara;
         
-    //char bufor[30 + 1];
         kolejny->rokst = 4;
         kolejny->nralb = 25555;
         kolejny->kierunek = (char*)malloc(sizeof(char) * (strlen("Lekarski") + 1));
-        strcpy(kolejny->kierunek, "Lekarski");
-        //strcpy(kierunek, bufor);     
+        strcpy(kolejny->kierunek, "Lekarski");     
         kolejny->nazwisko = (char*)malloc(sizeof(char) * (strlen("Pokora") + 1));
         strcpy(kolejny->nazwisko, "Pokora");
-        //strcpy(nazwisko, bufor);
+
         sara.adrnast = &nadia;
+
+    struct studtoku ania={5, 34899, "Zdrowie publiczne", "Kloczkowska", NULL};
+    nadia.adrnast = &ania;
         
-//4. pokazywanie listy
+//4. wyświetlanie listy
     struct studtoku *tmp = NULL;
     tmp=kolejny;
 
@@ -48,4 +49,22 @@ int main()
 
     printf("Nazwisko Pokora?: %s\n", kolejny->nazwisko);
     return 0;
+}
+
+/*
+Do zrobienia jeszcze w programie:
+1. rozbicie kodu programu na funkcje i wykorzystanie ich w main()
+2. możliwość wpisywania własnych pozycji listy z klawiatury, funkcja gets() albo scanf()
+3. sortowanie bąbelkowe utworzonej listy
+4. obsługa drzewa do tej listy
+5. obsługa stosu na tej liście
+6. implementacja kolejki?
+7. 
+
+*/
+
+int dodajstud()
+{
+gets()
+
 }
