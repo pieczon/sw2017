@@ -7,7 +7,7 @@
 #define N 200
 char buff[200] = {0};
 
-int liniazawieracyfre(char *l)
+int linzcyfre(char *l)
 {
     int znaleziono = 0;
     while(0!=*l) //sprawdzamy czy wsk nie wskazuje na zero, po lewej stronie wartość nieprzepisywalna, bo pod nia nie mozna nic przypisac, zapis rownowazny (*l!=0)
@@ -27,7 +27,7 @@ int main()
     while(!feof(fr))
     {
         fgets(buff, N, fr);
-        if(liniazawieracyfre(buff))
+        if(linzcyfre(buff))
         {
             fputs(buff, fw);  
         }
