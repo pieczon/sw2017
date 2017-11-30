@@ -15,7 +15,7 @@ void statystyki(char sciezka[])
 	}
 	for(int i=0; i<256; i++)
 	{
-		if(tab[i] > 0 && i!=10)
+		if(tab[i] > 0 && i!=10 && i!=32) //wycięcie ze sprawdzania znaku nowej linii i spacji
 		{
 			printf("znak %c wystapil %d razy.\n",i,tab[i]);
 			if(ilosc < tab[i])
