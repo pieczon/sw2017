@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
     unsigned char lpierwsza[L] = {'0'};
     unsigned char ldruga[L] = {'0'};
-    unsigned char suma[L+1] = {0};
+    unsigned char suma[L+1] = {'0'};
     int dodaj = 0;
     int wstawzero = 0;
     int i = 0;
@@ -35,7 +35,25 @@ int main(int argc, char* argv[])
     }
     wstawzero = L-i;
     memmove(lpierwsza+wstawzero, lpierwsza, i);
-    memset(lpierwsza, 0, wstawzero);     
+    memset(lpierwsza, 0, wstawzero);   
+    
+    jestcyfra = 1;
+    i = 0;
+    wstawzero = 0;
+    while(jestcyfra == 1)
+    {
+        if(ldruga[i] != 0)
+        {
+            i++;
+        }
+        else
+        {
+            jestcyfra--;
+        }
+    }
+    wstawzero = L-i;
+    memmove(ldruga+wstawzero, ldruga, i);
+    memset(ldruga, 0, wstawzero); 
 
     for(n=L-1; n>=0; n--)
     {
@@ -78,8 +96,8 @@ int main(int argc, char* argv[])
             jestcyfra--;
         }
     }
-    memmove(suma, suma+i+1, L-1);
-    memset(suma+(L-1), 0, i+1);
+    memmove(suma, suma+i+1, L-i);
+    memset(suma+(L-i), 0, i+1);
 
     printf("\nSuma: %s\n", suma);
     return 0;
