@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
     unsigned char lpierwsza[L] = {'0'};
     unsigned char ldruga[L] = {'0'};
-    unsigned char suma[L+1] = {'0'};
+    unsigned char suma[L+1] = {0};
     int dodaj = 0;
     int wstawzero = 0;
     int i = 0;
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
             {
                 dodaj = 0;
                 dodaj = dodaj + dziesiatki;
-                dodaj = (lpierwsza[n] - '0') + (ldruga[n] - '0');
+                dodaj += (lpierwsza[n] - '0') + (ldruga[n] - '0');
                 dziesiatki = dodaj/10;
                 suma[n+1] = dodaj%10 + '0';
             }
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
             {
                 dodaj = 0;
                 dodaj = dodaj + dziesiatki;
-                dodaj = (lpierwsza[n] - '0') + (ldruga[n]);
+                dodaj += (lpierwsza[n] - '0') + ldruga[n];
                 dziesiatki = dodaj/10;
                 suma[n+1] = dodaj%10 + '0';
             }
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
     i = L-1;
     while(jestcyfra == 1)
     {
-        if(suma[i] != 0)
+          if(suma[i] != 0)
         {
             i--;
         }
@@ -99,6 +99,6 @@ int main(int argc, char* argv[])
     memmove(suma, suma+i+1, L-i);
     memset(suma+(L-i), 0, i+1);
 
-    printf("\nSuma: %s\n", suma);
+    printf("Suma: %s\n", suma);
     return 0;
 }
