@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
     unsigned char lpierwsza[L] = {'0'};
     unsigned char ldruga[L] = {'0'};
-    unsigned char suma[L+1] = {0};
+    unsigned char suma[L+1] = {'0'};
     int dodaj = 0;
     int wstawzero = 0;
     int i = 0;
