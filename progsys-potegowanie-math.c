@@ -18,8 +18,6 @@ int main()
             cyfra = znak - '0';
             kwadrat = pow(cyfra, 2);
             printf("Liczba: %c - do potęgi 2: %d\n", znak, kwadrat);
-            
-
         }
     }
     fclose(fw);
