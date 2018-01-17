@@ -37,6 +37,7 @@ void dodajnapocz(stud **el, int rk, int nr, char *ki, char *na)
         pom->next = *el;
         *el = pom;
     }
+    printf("Dodawanie na początek: %s, album: %d, %s, rok: %d\n", pom->nazw, pom->nralb, pom->kier, pom->rokst);
 }
 
 void dodajnakon(stud **el, int rk, int nr, char* ki, char* na)
@@ -61,9 +62,10 @@ void dodajnakon(stud **el, int rk, int nr, char* ki, char* na)
         }
         buf->next = pom;
     }
+    printf("Dodawanie na koniec: %s, album: %d, %s, rok: %d\n", pom->nazw, pom->nralb, pom->kier, pom->rokst);
 }
 
-int pokazlist(stud *el)
+void pokazlist(stud *el)
 {
     if(el != NULL)
     {
@@ -73,24 +75,95 @@ int pokazlist(stud *el)
             el = el->next;
         }
     }
-    return 0;
+}
+
+void usunpocz(stud **el)
+{
+    struct student *pom = malloc(sizeof(stud));
+    pom = *el;
+    if((**el).next)
+    {
+        puts("--------------------");
+    printf("Po usunięciu pierwszego rekordu: %s\n\n", pom->nazw);
+        *el = (**el).next;
+        free(pom);
+    }
+    else
+    {
+        puts("Lista nie ma elementów\n");
+    }
+}
+
+void usunkon(stud **el)
+{
+    struct student *pom = malloc(sizeof(stud));;
+    struct student *przedos = malloc(sizeof(stud));;
+    pom = *el;
+    while(pom->next)
+    {
+        przedos = pom;
+        pom = pom->next;    
+    }
+    puts("--------------------");
+    printf("Po usunięciu ostatniego rekordu: %s\n\n", pom->nazw);
+    przedos->next = NULL;
+    free(pom);
+}
+
+void usunwybr(stud **el, int nr)
+{
+    struct student *pom = malloc(sizeof(stud));
+    struct student *przedos = malloc(sizeof(stud));
+    pom = *el;
+    while(pom->next)
+    {
+        przedos = pom;
+        pom = (*pom).next;
+        if(pom->nralb == nr)
+        {
+            puts("--------------------");
+            printf("Po usunięciu wybranego rekordu: %s\n\n", pom->nazw);
+            przedos->next = pom->next;
+            pom->next = NULL;
+            free(pom);
+        }
+    }
+}
+
+void sortscal(stud **el)
+{
+
 }
 
 int main()
 {
     struct student *head = NULL;
-    puts("--------------------");
-    puts("Lista studentów w C, z dodawaniem na początek: \n");
+    puts("\n");
     dodajnapocz(&head, 5, 25000, "Kosma", "Przydrożna");
     dodajnapocz(&head, 1, 45334, "Dieta", "Karyna");
     dodajnapocz(&head, 3, 49658, "Lekarsko-dentystyczny", "Zielonka");
     dodajnapocz(&head, 2, 57800, "Lekarski", "Ogrodowa");
+    
+    puts("--------------------");
+    puts("Wyświetlanie zmienionej listy: \n");
+    pokazlist(head);
+    puts("\n");
+    dodajnakon(&head, 1, 45678, "Farmacja", "Paliwoda");
+    dodajnakon(&head, 6, 39800, "Administracja w służbie zdrowia", "Końcowa");
+    
+    puts("--------------------");
+    puts("Wyświetlanie zmienionej listy: \n");
     pokazlist(head);
 
-    puts("--------------------");
-    puts("Lista studentów w C, z dodawaniem na koniec: \n");
-    dodajnakon(&head, 1, 45678, "Farmacja", "Końcowa");
-    dodajnakon(&head, 6, 39800, "Administracja w służbie zdrowia", "Paliwoda");
+
+
+    usunwybr(&head, 49658);
+    pokazlist(head);
+
+    usunkon(&head);
+    pokazlist(head);
+
+    usunpocz(&head);
     pokazlist(head);
     
     puts("\nKoniec listy studentów.\n");
