@@ -1,40 +1,66 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-//sortowanie przez scalanie
+int tab[10] = {12,3,1,55,34,78,66,90,11,8};
+int temp[10];
+
+void merge(int first, int mid, int last)
+{
+    //zmienne pomocnicze dla tablicy tymczasowej
+    int i, j, k;
+    for(i=first; i<=last; i++)
+    {
+        temp[i] = tab[i];
+    }
+    //ustawianie indeksów tablicy pomocniczej
+    i=first;
+    j=mid+1;
+    k=first;
+    //sortowanie w podzbiorach
+    while(i<=mid && j<=last)
+    {
+        if(temp[i] < temp[j])
+        {
+            tab[k++]=temp[i++];
+        }
+        else
+        {
+            tab[k++]=temp[j++];
+        }
+    }
+    while(i<=mid)
+    {
+        tab[k++]=temp[i++];
+    }
+}
+
+void sortuj(int first, int last)
+{
+    int mid;
+    if(first < last)
+    {
+        mid=(first+last)/2;
+        sortuj(first, mid); //pierwsza połówka tablicy
+        sortuj(mid+1, last); //druga połówka tablicy
+        merge(first, mid, last); //na koniec łączenie połówek
+    }
+}
 
 int main()
 {
-	int tab[8] = {6,5,3,1,8,7,2,4};
-	int temp = 0;
-	int n = sizeof(tab) / sizeof(int);
+    int i;
+    printf("Bez sortowania: ");
+    for(i=0; i<10; i++)
+    {
+        printf("%d ", tab[i]);
+    }
 
-	for (int i=0;i<n;i++) //wypisanie el. tablicy wejściowej
-	{
-		printf("El. nieposortowany: %d\n", tab[i]);
-	}
-	
-	printf("Połowa zbioru: %d", n);
+    sortuj(0,9);
 
-	while(n>1)
-	{
-		for(int i=0;i<n-1;i++)
-		{
-			if (tab[i] > tab[i+1])
-			{
-				temp = tab[i];
-				tab[i] = tab[i+1];
-				tab[i+1] = temp;
-			}
-		}
-		n = n-1;
-	}
-	printf("\n");
-	n = sizeof(tab) / sizeof(int);
-
-	for (int i=0;i<n;i++)
-        {
-                printf("El. posortowany: %d\n", tab[i]);
-        }
-
+    printf("\nPo sortowaniu: ");
+    for(i=0; i<10; i++)
+    {
+        printf("%d ", tab[i]);
+    }
+    printf("\n");
 }
