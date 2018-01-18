@@ -84,7 +84,7 @@ void usunPocz(stud **el)
     pom = *el;
     if((**el).next)
     {
-        puts("--------------------");
+    puts("--------------------");
     printf("Po usunięciu pierwszego rekordu: %s\n\n", pom->nazw);
         *el = (**el).next;
         free(pom);
@@ -97,148 +97,138 @@ void usunPocz(stud **el)
 
 void usunKon(stud **el)
 {
-    struct student *pom = malloc(sizeof(stud));;
+    struct student *ost = malloc(sizeof(stud));;
     struct student *przedos = malloc(sizeof(stud));;
-    pom = *el;
-    while(pom->next)
+    ost = *el;
+    while(ost->next)
     {
-        przedos = pom;
-        pom = pom->next;    
+        przedos = ost;
+        ost = ost->next;    
     }
     puts("--------------------");
-    printf("Po usunięciu ostatniego rekordu: %s\n\n", pom->nazw);
+    printf("Po usunięciu ostatniego rekordu: %s\n\n", ost->nazw);
     przedos->next = NULL;
-    free(pom);
+    free(ost);
 }
 
 void usunWybr(stud **el, int nr)
 {
-    struct student *pom = malloc(sizeof(stud));
-    struct student *przedos = malloc(sizeof(stud));
-    pom = *el;
-    while(pom->next)
+    struct student *wyb = malloc(sizeof(stud));
+    struct student *poprz = malloc(sizeof(stud));
+    wyb = *el;
+    while(wyb->next)
     {
-        przedos = pom;
-        pom = (*pom).next;
-        if(pom->nralb == nr)
+        poprz = wyb;
+        wyb = (*wyb).next;
+        if(wyb->nralb == nr)
         {
             puts("--------------------");
-            printf("Po usunięciu wybranego rekordu: %s\n\n", pom->nazw);
-            przedos->next = pom->next;
-            pom->next = NULL;
-            free(pom);
+            printf("Po usunięciu wybranego rekordu: %s\n\n", wyb->nazw);
+            poprz->next = wyb->next;
+            wyb->next = NULL;
+            free(wyb);
         }
     }
 }
 
-struct student *SortedMerge(stud *a, stud *b)
+struct student *scalPosortowane(stud *pierwsza, stud *druga)
 {
-    struct student *result = malloc(sizeof(stud));
-    result->next = NULL;
-    
-    /* Base cases */
-    if(a == NULL) return(b);
-    else if(b==NULL) return(a);
-    
-    /* Pick either a or b, and recur */
-    if(strcmp(a->nazw, b->nazw)<0)
+    struct student *posortowana = malloc(sizeof(stud));
+    posortowana->next = NULL;
+
+    if(pierwsza == NULL) 
     {
-        result = a;
-        result->next = SortedMerge(a->next, b);
+        return(druga);
+    }
+    else if(druga == NULL)
+    {
+        return(pierwsza);
+    } 
+
+    if(strcmp(pierwsza->nazw, druga->nazw) < 0)
+    {
+        posortowana = pierwsza;
+        posortowana->next = scalPosortowane(pierwsza->next, druga);
     }
     else
     {
-        result = b;
-        result->next = SortedMerge(a, b->next);
+        posortowana = druga;
+        posortowana->next = scalPosortowane(pierwsza, druga->next);
     }
-    return(result);
+    return(posortowana);
 }
 
-void MergeSort(stud **el)
+void mergeSort(stud **el)
 {
-    struct student *pom = malloc(sizeof(stud));
-    struct stud *first = malloc(sizeof(stud));
-    struct stud *last = malloc(sizeof(stud));
-    pom = *el;
+    struct student *cala = malloc(sizeof(stud));
+    struct stud *pierwsza = malloc(sizeof(stud));
+    struct stud *druga = malloc(sizeof(stud));
+    cala = *el;
     
-    /* Base case -- length 0 or 1 */
-    if((pom == NULL) || (pom->next == NULL))
+    if((cala == NULL) || (cala->next == NULL))
     {
         //puts("Nic tu nie ma");
         return;
     }
-    
-    /* Split head into 'a' and 'b' sublists */
-    FrontBackSplit(pom, &first, &last); 
-    
-    /* Recursively sort the sublists */
-    MergeSort(&first);
-    MergeSort(&last);
-    
-    /* answer = merge the two sorted lists together */
-    *el = SortedMerge(first, last);
+
+    dajSublisty(cala, &pierwsza, &druga); 
+    mergeSort(&pierwsza);
+    mergeSort(&druga);
+    *el = scalPosortowane(pierwsza, druga);
 }
 
-/* UTILITY FUNCTIONS */
-/* Split the nodes of the given list into front and back halves, and return the two lists using the reference parameters.
-If the length is odd, the extra node should go in the front list. Uses the fast/slow pointer strategy.  */
-void FrontBackSplit(stud *source, stud **frontRef, stud **backRef)
+void dajSublisty(stud *cala, stud **pierwsza, stud **druga)
 {
-    struct student *fast = malloc(sizeof(stud));
-    struct student *slow = malloc(sizeof(stud));
-    if(source==NULL || source->next==NULL)
+    struct student *fastptr = malloc(sizeof(stud));
+    struct student *slowptr = malloc(sizeof(stud));
+    if((cala == NULL) || (cala->next == NULL))
     {
-        /* length < 2 cases */
-        *frontRef = source;
-        *backRef = NULL;
+        *pierwsza = cala;
+        *druga = NULL;
     }
     else
     {
-        slow = source;
-        fast = source->next;
-    
-        /* Advance 'fast' two nodes, and advance 'slow' one node */
-        while(fast != NULL)
+        slowptr = cala;
+        fastptr = cala->next; //przemieszczanie się po liście o dwa węzły na raz, czyli cala->next->next
+
+        while(fastptr)
         {
-            fast = fast->next;
-            if(fast != NULL)
+            fastptr = fastptr->next;
+            if(fastptr != NULL)
             {
-                slow = slow->next;
-                fast = fast->next;
+                slowptr = slowptr->next;
+                fastptr = fastptr->next;
             }
         }
-    
-        /* 'slow' is before the midpoint in the list, so split it in two at that point. */
-        *frontRef = source;
-        *backRef = slow->next;
-        slow->next = NULL;
+        //w tym miejscu fastptr dotarł do ostatniego węzła, a slowptr jest na węźle przed środkiem
+        *pierwsza = cala;
+        *druga = slowptr->next; //wystarczy wyznaczyć drugą sublistę od tego węzła
+        slowptr->next = NULL; //potem usunąć dowiązanie do drugiej sublisty i mamy 2 niezależne listy 
     }
 }
 
 int main()
 {
     struct student *head = NULL;
+
     puts("\n");
     dodajnaPocz(&head, 5, 25000, "Kosma", "Przydrożna");
     dodajnaPocz(&head, 1, 45334, "Dieta", "Karyna");
     dodajnaPocz(&head, 3, 49658, "Lekarsko-dentystyczny", "Zielonka");
     dodajnaPocz(&head, 2, 57800, "Lekarski", "Ogrodowa");
     dodajnaPocz(&head, 2, 77900, "Analityka medyczna", "Wypadek");
-    
-    puts("--------------------");
-    puts("Wyświetlanie zmienionej listy: \n");
+    puts("--------------------\nWyświetlanie zmienionej listy:\n");
     pokazList(head);
+    
     puts("\n");
     dodajnaKon(&head, 1, 45678, "Farmacja", "Paliwoda");
     dodajnaKon(&head, 6, 39800, "Administracja w służbie zdrowia", "Końcowa");
-    
-    puts("--------------------");
-    puts("Wyświetlanie zmienionej listy: \n");
+    puts("--------------------\nWyświetlanie zmienionej listy:\n");
     pokazList(head);
 
-    puts("--------------------");
-    puts("Wyświetlanie posortowanej listy: \n");
-    MergeSort(&head);
+    puts("\n");
+    puts("--------------------\nWyświetlanie posortowanej alfabetycznie listy:\n");
+    mergeSort(&head);
     pokazList(head);
 
     usunWybr(&head, 77900);
