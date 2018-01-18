@@ -110,7 +110,7 @@ void usunkon(stud **el)
     free(pom);
 }
 
-void usunwybr(stud **el, int nr)
+void UsunWybr(stud **el, int nr)
 {
     struct student *pom = malloc(sizeof(stud));
     struct student *przedos = malloc(sizeof(stud));
@@ -130,10 +130,95 @@ void usunwybr(stud **el, int nr)
     }
 }
 
-void sortscal(stud **el)
-{
+//void SortujScal(stud **el)
+//{
+    /* sorts the linked list by changing next pointers (not data) */
+    void MergeSort(stud **el)
+    {
+        struct student *pom = malloc(sizeof(stud));
+        struct stud *first = malloc(sizeof(stud));
+        struct stud *last = malloc(sizeof(stud));
+        pom = *el;
+        
+        /* Base case -- length 0 or 1 */
+        if ((pom == NULL) || (pom->next == NULL))
+        {
+            return;
+        }
+        
+        /* Split head into 'a' and 'b' sublists */
+        FrontBackSplit(pom, &first, &last); 
+        
+        /* Recursively sort the sublists */
+        MergeSort(&first);
+        MergeSort(&last);
+        
+        /* answer = merge the two sorted lists together */
+        *el = SortedMerge(first, last);
+    }
 
-}
+    /* UTILITY FUNCTIONS */
+    /* Split the nodes of the given list into front and back halves, and return the two lists using the reference parameters.
+    If the length is odd, the extra node should go in the front list. Uses the fast/slow pointer strategy.  */
+    void FrontBackSplit(stud *source, stud **frontRef, stud **backRef)
+    {
+        struct student *fast = malloc(sizeof(stud));
+        struct student *slow = malloc(sizeof(stud));
+        if (source==NULL || source->next==NULL)
+        {
+            /* length < 2 cases */
+            *frontRef = source;
+            *backRef = NULL;
+        }
+        else
+        {
+            slow = source;
+            fast = source->next;
+        
+            /* Advance 'fast' two nodes, and advance 'slow' one node */
+            while (fast != NULL)
+            {
+                fast = fast->next;
+                if (fast != NULL)
+                {
+                    slow = slow->next;
+                    fast = fast->next;
+                }
+            }
+        
+            /* 'slow' is before the midpoint in the list, so split it in two
+            at that point. */
+            *frontRef = source;
+            *backRef = slow->next;
+            slow->next = NULL;
+        }
+    }
+
+    /* See https://www.geeksforgeeks.org/?p=3622 for details of this 
+   function */
+    struct stud *SortedMerge(stud *a, stud *b)
+    {
+        struct student *result = malloc(sizeof(stud));
+        result->next = NULL;
+        
+        /* Base cases */
+        if (a == NULL) return(b);
+        else if (b==NULL) return(a);
+        
+        /* Pick either a or b, and recur */
+        if (a->nazw <= b->nazw)
+        {
+            result = a;
+            result->next = SortedMerge(a->next, b);
+        }
+        else
+        {
+            result = b;
+            result->next = SortedMerge(a, b->next);
+        }
+        return(result);
+    }
+//}
 
 int main()
 {
@@ -155,9 +240,12 @@ int main()
     puts("Wyświetlanie zmienionej listy: \n");
     pokazlist(head);
 
+    puts("--------------------");
+    puts("Wyświetlanie posortowanej listy: \n");
+    MergeSort(&head);
+    pokazlist(head);
 
-
-    usunwybr(&head, 49658);
+    UsunWybr(&head, 49658);
     pokazlist(head);
 
     usunkon(&head);
