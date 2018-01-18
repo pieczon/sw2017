@@ -18,7 +18,7 @@ typedef struct student
     char *kier;
     char *nazw;
     struct student *next;
-    //struct wsk *prev;
+    //struct student *prev;
 }stud;
 
 void dodajnaPocz(stud **el, int rk, int nr, char *ki, char *na)
