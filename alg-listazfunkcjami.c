@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 //definicja listy
 // typedef struct osoba
@@ -16,11 +17,11 @@ typedef struct student
     int nralb;
     char *kier;
     char *nazw;
-    struct wsk *next;
+    struct student *next;
     //struct wsk *prev;
 }stud;
 
-void dodajnapocz(stud **el, int rk, int nr, char *ki, char *na)
+void dodajnaPocz(stud **el, int rk, int nr, char *ki, char *na)
 {
     struct student *pom = malloc(sizeof(stud));
     pom->next = NULL; //zapis równoważny (*pom).next = NULL;
@@ -40,7 +41,7 @@ void dodajnapocz(stud **el, int rk, int nr, char *ki, char *na)
     printf("Dodawanie na początek: %s, album: %d, %s, rok: %d\n", pom->nazw, pom->nralb, pom->kier, pom->rokst);
 }
 
-void dodajnakon(stud **el, int rk, int nr, char* ki, char* na)
+void dodajnaKon(stud **el, int rk, int nr, char *ki, char *na)
 {
     struct student *buf = malloc(sizeof(stud));
     struct student *pom = malloc(sizeof(stud));
@@ -65,7 +66,7 @@ void dodajnakon(stud **el, int rk, int nr, char* ki, char* na)
     printf("Dodawanie na koniec: %s, album: %d, %s, rok: %d\n", pom->nazw, pom->nralb, pom->kier, pom->rokst);
 }
 
-void pokazlist(stud *el)
+void pokazList(stud *el)
 {
     if(el != NULL)
     {
@@ -77,7 +78,7 @@ void pokazlist(stud *el)
     }
 }
 
-void usunpocz(stud **el)
+void usunPocz(stud **el)
 {
     struct student *pom = malloc(sizeof(stud));
     pom = *el;
@@ -94,7 +95,7 @@ void usunpocz(stud **el)
     }
 }
 
-void usunkon(stud **el)
+void usunKon(stud **el)
 {
     struct student *pom = malloc(sizeof(stud));;
     struct student *przedos = malloc(sizeof(stud));;
@@ -110,7 +111,7 @@ void usunkon(stud **el)
     free(pom);
 }
 
-void UsunWybr(stud **el, int nr)
+void usunWybr(stud **el, int nr)
 {
     struct student *pom = malloc(sizeof(stud));
     struct student *przedos = malloc(sizeof(stud));
@@ -130,129 +131,124 @@ void UsunWybr(stud **el, int nr)
     }
 }
 
-//void SortujScal(stud **el)
-//{
-    /* sorts the linked list by changing next pointers (not data) */
-    void MergeSort(stud **el)
+struct student *SortedMerge(stud *a, stud *b)
+{
+    struct student *result = malloc(sizeof(stud));
+    result->next = NULL;
+    
+    /* Base cases */
+    if(a == NULL) return(b);
+    else if(b==NULL) return(a);
+    
+    /* Pick either a or b, and recur */
+    if(strcmp(a->nazw, b->nazw)<0)
     {
-        struct student *pom = malloc(sizeof(stud));
-        struct stud *first = malloc(sizeof(stud));
-        struct stud *last = malloc(sizeof(stud));
-        pom = *el;
-        
-        /* Base case -- length 0 or 1 */
-        if ((pom == NULL) || (pom->next == NULL))
-        {
-            return;
-        }
-        
-        /* Split head into 'a' and 'b' sublists */
-        FrontBackSplit(pom, &first, &last); 
-        
-        /* Recursively sort the sublists */
-        MergeSort(&first);
-        MergeSort(&last);
-        
-        /* answer = merge the two sorted lists together */
-        *el = SortedMerge(first, last);
+        result = a;
+        result->next = SortedMerge(a->next, b);
     }
-
-    /* UTILITY FUNCTIONS */
-    /* Split the nodes of the given list into front and back halves, and return the two lists using the reference parameters.
-    If the length is odd, the extra node should go in the front list. Uses the fast/slow pointer strategy.  */
-    void FrontBackSplit(stud *source, stud **frontRef, stud **backRef)
+    else
     {
-        struct student *fast = malloc(sizeof(stud));
-        struct student *slow = malloc(sizeof(stud));
-        if (source==NULL || source->next==NULL)
+        result = b;
+        result->next = SortedMerge(a, b->next);
+    }
+    return(result);
+}
+
+void MergeSort(stud **el)
+{
+    struct student *pom = malloc(sizeof(stud));
+    struct stud *first = malloc(sizeof(stud));
+    struct stud *last = malloc(sizeof(stud));
+    pom = *el;
+    
+    /* Base case -- length 0 or 1 */
+    if((pom == NULL) || (pom->next == NULL))
+    {
+        //puts("Nic tu nie ma");
+        return;
+    }
+    
+    /* Split head into 'a' and 'b' sublists */
+    FrontBackSplit(pom, &first, &last); 
+    
+    /* Recursively sort the sublists */
+    MergeSort(&first);
+    MergeSort(&last);
+    
+    /* answer = merge the two sorted lists together */
+    *el = SortedMerge(first, last);
+}
+
+/* UTILITY FUNCTIONS */
+/* Split the nodes of the given list into front and back halves, and return the two lists using the reference parameters.
+If the length is odd, the extra node should go in the front list. Uses the fast/slow pointer strategy.  */
+void FrontBackSplit(stud *source, stud **frontRef, stud **backRef)
+{
+    struct student *fast = malloc(sizeof(stud));
+    struct student *slow = malloc(sizeof(stud));
+    if(source==NULL || source->next==NULL)
+    {
+        /* length < 2 cases */
+        *frontRef = source;
+        *backRef = NULL;
+    }
+    else
+    {
+        slow = source;
+        fast = source->next;
+    
+        /* Advance 'fast' two nodes, and advance 'slow' one node */
+        while(fast != NULL)
         {
-            /* length < 2 cases */
-            *frontRef = source;
-            *backRef = NULL;
-        }
-        else
-        {
-            slow = source;
-            fast = source->next;
-        
-            /* Advance 'fast' two nodes, and advance 'slow' one node */
-            while (fast != NULL)
+            fast = fast->next;
+            if(fast != NULL)
             {
+                slow = slow->next;
                 fast = fast->next;
-                if (fast != NULL)
-                {
-                    slow = slow->next;
-                    fast = fast->next;
-                }
             }
-        
-            /* 'slow' is before the midpoint in the list, so split it in two
-            at that point. */
-            *frontRef = source;
-            *backRef = slow->next;
-            slow->next = NULL;
         }
+    
+        /* 'slow' is before the midpoint in the list, so split it in two at that point. */
+        *frontRef = source;
+        *backRef = slow->next;
+        slow->next = NULL;
     }
-
-    /* See https://www.geeksforgeeks.org/?p=3622 for details of this 
-   function */
-    struct stud *SortedMerge(stud *a, stud *b)
-    {
-        struct student *result = malloc(sizeof(stud));
-        result->next = NULL;
-        
-        /* Base cases */
-        if (a == NULL) return(b);
-        else if (b==NULL) return(a);
-        
-        /* Pick either a or b, and recur */
-        if (a->nazw <= b->nazw)
-        {
-            result = a;
-            result->next = SortedMerge(a->next, b);
-        }
-        else
-        {
-            result = b;
-            result->next = SortedMerge(a, b->next);
-        }
-        return(result);
-    }
-//}
+}
 
 int main()
 {
     struct student *head = NULL;
     puts("\n");
-    dodajnapocz(&head, 5, 25000, "Kosma", "Przydrożna");
-    dodajnapocz(&head, 1, 45334, "Dieta", "Karyna");
-    dodajnapocz(&head, 3, 49658, "Lekarsko-dentystyczny", "Zielonka");
-    dodajnapocz(&head, 2, 57800, "Lekarski", "Ogrodowa");
+    dodajnaPocz(&head, 5, 25000, "Kosma", "Przydrożna");
+    dodajnaPocz(&head, 1, 45334, "Dieta", "Karyna");
+    dodajnaPocz(&head, 3, 49658, "Lekarsko-dentystyczny", "Zielonka");
+    dodajnaPocz(&head, 2, 57800, "Lekarski", "Ogrodowa");
+    dodajnaPocz(&head, 2, 77900, "Analityka medyczna", "Wypadek");
     
     puts("--------------------");
     puts("Wyświetlanie zmienionej listy: \n");
-    pokazlist(head);
+    pokazList(head);
     puts("\n");
-    dodajnakon(&head, 1, 45678, "Farmacja", "Paliwoda");
-    dodajnakon(&head, 6, 39800, "Administracja w służbie zdrowia", "Końcowa");
+    dodajnaKon(&head, 1, 45678, "Farmacja", "Paliwoda");
+    dodajnaKon(&head, 6, 39800, "Administracja w służbie zdrowia", "Końcowa");
     
     puts("--------------------");
     puts("Wyświetlanie zmienionej listy: \n");
-    pokazlist(head);
+    pokazList(head);
 
     puts("--------------------");
     puts("Wyświetlanie posortowanej listy: \n");
     MergeSort(&head);
-    pokazlist(head);
+    pokazList(head);
 
-    UsunWybr(&head, 49658);
-    pokazlist(head);
+    usunWybr(&head, 77900);
+    pokazList(head);
 
-    usunkon(&head);
-    pokazlist(head);
+    usunKon(&head);
+    pokazList(head);
 
-    usunpocz(&head);
-    pokazlist(head);
+    usunPocz(&head);
+    pokazList(head);
     
     puts("\nKoniec listy studentów.\n");
     return 0;
