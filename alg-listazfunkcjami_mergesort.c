@@ -131,6 +131,23 @@ void usunWybr(stud **el, int nr)
     }
 }
 
+void usunList(stud **el)
+{
+    struct student *pom = malloc(sizeof(stud));
+    struct student *usun = NULL;
+    pom = *el;
+    while(pom)
+    {
+        usun = pom;
+        pom = pom->next;
+        usun->nazw = NULL;
+        usun->kier = NULL;
+        usun->next = NULL;
+        free(usun);
+    }
+    puts("--------------------\nPo usunięciu całej listy: \n");
+}
+
 struct student *scalPosortowane(stud *pierwsza, stud *druga)
 {
     struct student *posortowana = malloc(sizeof(stud));
@@ -226,8 +243,7 @@ int main()
     puts("--------------------\nWyświetlanie zmienionej listy:\n");
     pokazList(head);
 
-    puts("\n");
-    puts("--------------------\nWyświetlanie posortowanej alfabetycznie listy:\n");
+    puts("\n--------------------\nWyświetlanie posortowanej alfabetycznie listy:\n");
     mergeSort(&head);
     pokazList(head);
 
@@ -239,7 +255,10 @@ int main()
 
     usunPocz(&head);
     pokazList(head);
-    
+
+    usunList(&head);
+    pokazList(head);
+
     puts("\nKoniec listy studentów.\n");
     return 0;
 }
