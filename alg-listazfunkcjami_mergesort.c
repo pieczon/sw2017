@@ -66,7 +66,7 @@ void dodajnaKon(stud **el, int rk, int nr, char *ki, char *na)
     printf("Dodawanie na koniec: %s, album: %d, %s, rok: %d\n", pom->nazw, pom->nralb, pom->kier, pom->rokst);
 }
 
-void pokazList(stud *el)
+void pokazListe(stud *el)
 {
     if(el != NULL)
     {
@@ -84,8 +84,8 @@ void usunPocz(stud **el)
     pom = *el;
     if((**el).next)
     {
-    puts("--------------------");
-    printf("Po usunięciu pierwszego rekordu: %s\n\n", pom->nazw);
+        puts("--------------------");
+        printf("Po usunięciu pierwszego rekordu: %s\n\n", pom->nazw);
         *el = (**el).next;
         free(pom);
     }
@@ -131,7 +131,7 @@ void usunWybr(stud **el, int nr)
     }
 }
 
-void usunList(stud **el)
+void usunListe(stud **el)
 {
     struct student *pom = malloc(sizeof(stud));
     struct student *usun = NULL;
@@ -235,29 +235,29 @@ int main()
     dodajnaPocz(&head, 2, 57800, "Lekarski", "Ogrodowa");
     dodajnaPocz(&head, 2, 77900, "Analityka medyczna", "Wypadek");
     puts("--------------------\nWyświetlanie zmienionej listy:\n");
-    pokazList(head);
+    pokazListe(head);
     
     puts("\n");
     dodajnaKon(&head, 1, 45678, "Farmacja", "Paliwoda");
     dodajnaKon(&head, 6, 39800, "Administracja w służbie zdrowia", "Końcowa");
     puts("--------------------\nWyświetlanie zmienionej listy:\n");
-    pokazList(head);
+    pokazListe(head);
 
     puts("\n--------------------\nWyświetlanie posortowanej alfabetycznie listy:\n");
     mergeSort(&head);
-    pokazList(head);
+    pokazListe(head);
 
     usunWybr(&head, 77900);
-    pokazList(head);
+    pokazListe(head);
 
     usunKon(&head);
-    pokazList(head);
+    pokazListe(head);
 
     usunPocz(&head);
-    pokazList(head);
+    pokazListe(head);
 
-    usunList(&head);
-    pokazList(head);
+    usunListe(&head);
+    pokazListe(head);
 
     puts("\nKoniec listy studentów.\n");
     return 0;
