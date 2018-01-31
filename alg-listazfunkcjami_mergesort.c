@@ -3,22 +3,13 @@
 #include <string.h>
 #include <assert.h>
 
-//definicja listy
-// typedef struct osoba
-// {
-//     char *imie, *nazwisko;
-//     int wiek;
-// }osoba;
-
 typedef struct student
 {
-    //struct osoba;
     int rokst;
     int nralb;
     char *kier;
     char *nazw;
     struct student *next;
-    //struct student *prev;
 }stud;
 
 void dodajnaPocz(stud **el, int rk, int nr, char *ki, char *na)
