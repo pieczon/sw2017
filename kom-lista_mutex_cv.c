@@ -86,6 +86,7 @@ void *prod(void *arg)
             pthread_cond_wait(&cvfull, &initmutex);
         }
         pthread_mutex_unlock(&initmutex);
+        usleep(30000);
         ip++;
     }
     pthread_exit(NULL);
@@ -108,6 +109,7 @@ void *kons(void *arg)
             pthread_cond_wait(&cvempty, &initmutex);
         }
         pthread_mutex_unlock(&initmutex);
+        usleep(20000);
         ik++;
     }
 }
