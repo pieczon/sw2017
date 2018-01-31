@@ -10,26 +10,20 @@ unsigned int pojemnosc, ilosc, ik, ip = 0;
 
 typedef struct student
 {
-    int rokst;
     int nralb;
-    char *kier;
-    char *nazw;
     struct student *next;
 }stud;
 
 struct student *head = NULL;
 
-int dodajnaKon(stud **el, int rk, int nr, char *ki, char *na)
+int dodajnaKon(stud **el, int nr)
 {
     if(pojemnosc <= 5)
     {
         struct student *buf = malloc(sizeof(stud));
         struct student *pom = malloc(sizeof(stud));
         pom->next = NULL; //zapis równoważny (*pom).next = NULL;
-        pom->rokst = rk;
         pom->nralb = nr;
-        pom->kier = ki;
-        pom->nazw = na;
         buf = *el;
         if(*el == NULL)
         {
@@ -45,9 +39,6 @@ int dodajnaKon(stud **el, int rk, int nr, char *ki, char *na)
             }
             buf->next = pom;
         }
-        printf("Dodawanie na koniec: %s, album: %d, %s, rok: %d\n", pom->nazw, pom->nralb, pom->kier, pom->rokst);
-        
-        //powinienem zwrocic caly pom raczej
         return pom->nralb;
     }
     else
@@ -64,8 +55,6 @@ int usunPocz(stud **el)
     pom = *el;
     if((**el).next)
     {
-        puts("--------------------");
-        printf("Po usunięciu pierwszego rekordu: %s\n\n",pom->nazw);
         int usuwany = pom->nralb;
         *el = (**el).next;
         free(pom);
@@ -80,24 +69,12 @@ int usunPocz(stud **el)
     }
 }
 
-void pokazListe(stud *el)
-{
-    if(el != NULL)
-    {
-        while(el)
-        {
-            printf("  %s, album: %d, %s, rok: %d\n", el->nazw, el->nralb, el->kier, el->rokst);
-            el = el->next;
-        }
-    }
-}
-
 void *prod(void *arg)
 {
-    while(ip <= 10)
+    while(ip <= 2)
     {
         pthread_mutex_lock(&initmutex);
-        int element = dodajnaKon(&head, 5, 25000+ip, "Kosma", "Przydrożna");
+        int element = dodajnaKon(&head, 25000+ip);
         if(element != -1)
         {
             printf("Numer wątku %ld, dodany element: %d\n", pthread_self(), element);
@@ -116,13 +93,13 @@ void *prod(void *arg)
 
 void *kons(void *arg)
 {
-    while(ik < 10)
+    while(ik < 2)
     {
         pthread_mutex_lock(&initmutex);
         int element = usunPocz(&head);
         if(element != -1)
         {
-            printf("Numer wątku %ld usunięto pierwszy element %d", pthread_self(), element);
+            printf("Numer wątku %ld usunięto pierwszy element %d\n", pthread_self(), element);
             pthread_cond_signal(&cvfull);
         }
         else
@@ -138,8 +115,6 @@ void *kons(void *arg)
 
 int main()
 {
-    
-    
     pthread_t th_prod[5];
     pthread_t th_kons[5];
 
@@ -158,7 +133,8 @@ int main()
         perror("Błąd tworzenia cvempty");
         exit(0);
     }
-    printf("Wątki producentów\n");
+
+    printf("\n--------------------\nWątki producentów\n");
     for(int i=0; i<5; i++)
     {
         if(pthread_create(&th_prod[i], NULL, prod, NULL) != 0)
@@ -168,11 +144,11 @@ int main()
         }
         else
         {
-            printf("Producent numer %ld-%lu, wątek %ld\n", i, pthread_self(), th_prod[i]);
+            printf("\nProducent %ld nr %lu, wątek %ld\n", i, pthread_self(), th_prod[i]);
         }
     }
 
-    printf("Wątki konsumentów\n");
+    printf("\n--------------------\nWątki konsumentów\n");
     for(int i=0; i<5; i++)
     {
         if(pthread_create(&th_kons[i], NULL, kons, NULL) != 0)
@@ -182,17 +158,11 @@ int main()
         }
         else
         {
-            printf("Konsument numer %ld-%lu, wątek %ld\n", i, pthread_self(), th_kons[i]);
+            printf("\nKonsument %ld nr %lu, wątek %ld\n", i, pthread_self(), th_kons[i]);
         }
     }
     puts("\n");
-    // dodajnaKon(&head, 5, 25000, "Kosma", "Przydrożna");
-    // dodajnaKon(&head, 1, 45334, "Dieta", "Karyna");
-    // dodajnaKon(&head, 3, 49658, "Lekarsko-dentystyczny", "Zielonka");
-    // dodajnaKon(&head, 2, 57800, "Lekarski", "Ogrodowa");
-    // dodajnaKon(&head, 2, 77900, "Analityka medyczna", "Wypadek");
-    // dodajnaKon(&head, 1, 45678, "Farmacja", "Paliwoda");
-    // dodajnaKon(&head, 6, 39800, "Administracja w służbie zdrowia", "Końcowa");
+    
     for(int i=0; i<5; i++)
     {
         pthread_join(th_kons[i], NULL);
@@ -202,13 +172,9 @@ int main()
         pthread_join(th_prod[i], NULL);
     }
 
-    puts("--------------------\nWyświetlanie zmienionej listy:\n");
-    pokazListe(head);
-
     pthread_cond_destroy(&cvfull);
     pthread_cond_destroy(&cvempty);
     pthread_mutex_destroy(&initmutex);
 
-    puts("\nKoniec listy studentów.\n");
     return 0;
 }
