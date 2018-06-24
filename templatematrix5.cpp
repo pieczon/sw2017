@@ -6,35 +6,6 @@
 #include <exception>
 #include <algorithm>
 
-/* 
-Matrix<M,N,T>
-Napisać implementację:
--posiada operatory:
- dodawania macierzy (+)
- mnożenia macierzy (+)
- dodawania skalara do macierzy (+) 
- mnożenia macierzy przez skalar (+) 
--dostarcza konstruktory:
- domyślny
- kopiujący (+) 
- przesuwający*
-Zadanie dodatkowe: gdzie występuje (+) implementacja ma działać dla typu T1, który jest konwertowalny do typu T
-*/
-
-/*
--jezeli jest cos konwertowalne, to static castem po elementach juz docelowo konwertujemy
--w dwóch postaciach operatory [], z const & operator[] const, oraz bez czyli & operator[]
--zadanie na koniec przedmiotu na zaliczenie, stworzyc macierz matrix M,N z dzis
--znajomosc algorytmow: find, copy, accumulate; kontenery, predykaty - funckje lambda
--na zaliczeniu zestaw zadan, np. Ring Buffer uzywajac alg. STL
--5 zadan, wybieramy sobie jedno, ale kazde jest dosyc zlozone
--np. zaimplementowac smart pointera mega trudny
--np. zrobic Serializacje Klasy to max na 3 lub 4, zapisac obiekt typu char to zapisac na dysku, zeby to sie dalo wczytac z dysku i odczytac/odtworzyc
--macierz Matrix<N,M,T> n wierszy, m kolumn i przechowuje dowolny typ danych T, z parametrami szablonowymi macierzy, bardzo punktowane, na 5 nawet z wieloma bledami
--to do zrobienia w chacie im szybciej tym lepiej
--lepiej jedno zadanie i sie na nim skupic
-*/
-
 template<std::size_t N, std::size_t M, typename T> 
 class Macierz
 {
